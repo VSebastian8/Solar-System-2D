@@ -1,2 +1,18 @@
 # Solar-System-2D
-OpenGL project simulating a solar system with stars in the background
+
+OpenGL Project setup for VsCode on Linux
+
+### _Used concepts:_
+
+- Transformation Matrix
+  > [x] translation \
+  > [x] rotation \
+  > [x] scale
+- Shaders
+  > [x] applied transformations \
+  > [x] changed colors \
+  > [] texture
+- Mouse/Keyboard Interaction
+  > [] zoom \
+  > [] adding stars \
+  > [] moving the origin
