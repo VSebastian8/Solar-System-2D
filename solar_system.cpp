@@ -22,6 +22,10 @@
 #include <vector>
 #include <iostream>
 
+// Fisierele in care avem codul pentru soare si planete
+#include "sun.h"
+#include "planets.h"
+
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, ProgramId, myMatrixLocation,
     matrRotlLocation, codColLocation;
@@ -34,39 +38,6 @@ glm::mat4 myMatrix, resizeMatrix;
 int codCol;
 //	Variabile pentru proiectia ortogonala;
 float xMin = -500, xMax = 500, yMin = -500, yMax = 500;
-float sunX = 0.0f, sunY = 0.0f;
-float PI = 3.141592;
-glm::mat4 sunPositionMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sunX, sunY, 1.0));
-
-struct Planet{
-  float size, radius, angle, speed;
-  int color_code;
-  glm::mat4 scaleTransform, translateTransform, rotationTransform;
-
-  Planet(float size, float radius, float angle, float speed, int color_code): 
-          size(size), radius(radius), angle(angle), speed(speed), color_code(color_code){
-    scaleTransform = glm::scale(glm::mat4(1.0f), glm::vec3(size, size, 0.0));
-    translateTransform = glm::translate(glm::mat4(1.0f), glm::vec3(radius, 0, 0.0));
-    rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
-  }
-  void rotate_planet(){
-    angle += speed;
-    if (angle > PI * 2)
-      angle -= PI * 2;
-    rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
-  }
-};
-std::vector<Planet> planets = {
-  Planet(0.05, 100, PI/2, 0.002, 3), 
-  Planet(0.1, 130, PI/6, 0.001, 4), 
-  Planet(0.2, 200, -PI, 0.0004, 5),
-  Planet(0.18, 230, -PI/8, 0.001, 6),
-  Planet(0.7, 320, PI, 0.0002, 7),
-  Planet(0.5, 400, PI*1.8f, 0.0003, 8),
-  Planet(0.18, 450, -PI/3, 0.0006, 9),
-  Planet(0.18, 472, PI/1.3f, 0.0007, 10),
-  };
-
 
 void CreateShaders(void) {
   ProgramId =
@@ -157,34 +128,6 @@ void Initialize(void) {
 
   // Coordonate ([xMin - xMax], [yMin - yMax]) -> ([-1.0, 1.0], [-1.0, 1.0])
   resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax);
- 
-}
-
-void MoveSun(int key, int xx, int yy) {
-	switch (key) {		
-  	case GLUT_KEY_LEFT:
-      sunX -= 10;
-      break;
-    case GLUT_KEY_RIGHT:
-      sunX += 10;
-      break;
-    case GLUT_KEY_UP:
-      sunY += 10;
-      break;
-    case GLUT_KEY_DOWN:
-      sunY -= 10;
-      break;
-    default:
-      return;
-	}
-  sunPositionMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sunX, sunY, 1.0));
-}
-
-void RotatePlanets() {
-  for (auto& planet: planets) {
-    planet.rotate_planet();
-  }
-  glutPostRedisplay();
 }
 
 //  Functia de desenarea a graficii pe ecran;
@@ -212,23 +155,12 @@ void RenderFunction(void) {
   glPolygonMode(GL_FRONT, GL_FILL);
   glPolygonMode(GL_BACK, GL_FILL);
 
-  codCol = 2;
-  glUniform1i(codColLocation, codCol);
-
   // Desenarea soarelui
-  myMatrix = resizeMatrix * sunPositionMatrix;
-  glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-  glDrawArrays(GL_POLYGON, 8, 8);
+  drawSun(resizeMatrix, myMatrixLocation, codColLocation);
 
   // Desenarea Planetelor
-  for(auto& planet: planets){
-    codCol = planet.color_code;
-    glUniform1i(codColLocation, codCol);
-    myMatrix = resizeMatrix * sunPositionMatrix * planet.rotationTransform * planet.translateTransform * planet.scaleTransform;
-    glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-    
-    glDrawArrays(GL_POLYGON, 8, 8);
-  }
+  drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation);
+ 
   //  Asigura rularea tuturor comenzilor OpenGL apelate anterior;
   glFlush();
 }

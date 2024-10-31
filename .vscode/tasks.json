@@ -8,6 +8,8 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${workspaceFolder}/shaders/*.cpp",
+                "${workspaceFolder}/sun.cpp",
+                "${workspaceFolder}/planets.cpp",
                 "${fileDirname}/${fileBasename}",
                 "${workspaceFolder}/glad/*.c",
                 "-o",
