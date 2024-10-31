@@ -25,19 +25,11 @@
 // Fisierele in care avem codul pentru soare si planete
 #include "sun.h"
 #include "planets.h"
+#include "util.h"
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, ProgramId, myMatrixLocation,
     matrRotlLocation, codColLocation;
-//	Dimensiunile ferestrei de afisare;
-GLfloat winWidth = 1000, winHeight = 1000;
-//	Variabile catre matricile de transformare;
-glm::mat4 myMatrix, resizeMatrix;
-
-//	Variabila ce determina schimbarea culorii pixelilor in shader;
-int codCol;
-//	Variabile pentru proiectia ortogonala;
-float xMin = -500, xMax = 500, yMin = -500, yMax = 500;
 
 void CreateShaders(void) {
   ProgramId =
@@ -49,15 +41,15 @@ void CreateVBO(void) {
   //  Coordonatele varfurilor;
   GLfloat Vertices[] = {
       // Cele 4 puncte din colturi;
-      xMin, yMin, 0.0f, 1.0f, 
-      xMax, yMin, 0.0f, 1.0f, 
-      xMax, yMax, 0.0f, 1.0f,
-      xMin, yMax, 0.0f, 1.0f,
+      -1.0f, -1.0f, 0.0f, 1.0f, 
+       1.0f, -1.0f, 0.0f, 1.0f, 
+       1.0f,  1.0f, 0.0f, 1.0f,
+      -1.0f,  1.0f, 0.0f, 1.0f,
       // Varfuri pentru axe;
-      xMin, 0.0f, 0.0f, 1.0f, 
-      xMax, 0.0f, 0.0f, 1.0f, 
-      0.0f, yMin, 0.0f, 1.0f,
-      0.0f, yMax, 0.0f, 1.0f,
+      -1.0f, 0.0f, 0.0f, 1.0f, 
+      1.0f, 0.0f, 0.0f, 1.0f, 
+      0.0f, -1.0f, 0.0f, 1.0f,
+      0.0f, 1.0f, 0.0f, 1.0f,
       // Varfuri Octagon
       50.0f, 0.0f, 0.0f, 1.0f,
       35.0f, 35.0f, 0.0f, 1.0f,
@@ -125,35 +117,18 @@ void Initialize(void) {
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
   myMatrixLocation = glGetUniformLocation(ProgramId, "myMatrix");
-
-  // Coordonate ([xMin - xMax], [yMin - yMax]) -> ([-1.0, 1.0], [-1.0, 1.0])
-  resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax);
 }
 
 //  Functia de desenarea a graficii pe ecran;
 void RenderFunction(void) {
   glClear(GL_COLOR_BUFFER_BIT);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_BLEND);
-  glPointSize(15.0);
-  glEnable(GL_POINT_SMOOTH);
 
-  myMatrix = resizeMatrix;
-  glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-  codCol = 0;
-  glUniform1i(codColLocation, codCol);
-
+  drawOptions();
+  
   // Gradient pentru fundal
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
+  drawBackground(myMatrixLocation, codColLocation);
   // Desenarea axelor;
-  codCol = 1;
-  glUniform1i(codColLocation, codCol);
-  glLineWidth(2.0);
-  // glDrawArrays(GL_LINES, 4, 4);
-
-  glPolygonMode(GL_FRONT, GL_FILL);
-  glPolygonMode(GL_BACK, GL_FILL);
+  // drawAxes(codColLocation);
 
   // Desenarea soarelui
   drawSun(resizeMatrix, myMatrixLocation, codColLocation);
@@ -170,9 +145,7 @@ int main(int argc, char *argv[]) {
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-  glutInitWindowSize(winWidth, winHeight);
-  glutInitWindowPosition(100, 100);
-  glutCreateWindow("Proiect 2D - Sistem Solar");
+  createWindow();
   glewInit();
 
   Initialize();
@@ -180,6 +153,7 @@ int main(int argc, char *argv[]) {
   glutDisplayFunc(RenderFunction);
   glutCloseFunc(Cleanup);
   glutIdleFunc(RotatePlanets);
+  glutKeyboardFunc(Zoom);
   glutSpecialFunc(MoveSun);
   
   glutMainLoop();
