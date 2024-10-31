@@ -123,8 +123,8 @@ void Initialize(void) {
 void RenderFunction(void) {
   glClear(GL_COLOR_BUFFER_BIT);
 
-  drawOptions();
-  
+  drawOptions(); 
+
   // Gradient pentru fundal
   drawBackground(myMatrixLocation, codColLocation);
   // Desenarea axelor;

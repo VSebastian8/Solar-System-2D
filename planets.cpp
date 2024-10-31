@@ -3,8 +3,12 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <vector>
+#include <iostream> 
+#include <chrono>
 
 float PI = 3.141592;
+double delta_time, ms = 60000.0f;
+auto previous_time = std::chrono::steady_clock::now(), current_time = std::chrono::steady_clock::now();
 
 struct Planet{
   float size, radius, angle, speed;
@@ -17,28 +21,39 @@ struct Planet{
     translateTransform = glm::translate(glm::mat4(1.0f), glm::vec3(radius, 0, 0.0));
     rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
   }
-  void rotate_planet(){
-    angle += speed;
+  void rotate_planet(float dt){
+    angle += (PI * 2.0f * speed) * dt / ms;
     if (angle > PI * 2)
       angle -= PI * 2;
     rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
   }
 };
-
+// Speed expressed in rotations per minute 
 std::vector<Planet> planets = {
-  Planet(0.05, 100, PI/2, 0.002, 3), 
-  Planet(0.1, 130, PI/6, 0.001, 4), 
-  Planet(0.2, 200, -PI, 0.0004, 5),
-  Planet(0.18, 230, -PI/8, 0.001, 6),
-  Planet(0.7, 320, PI, 0.0002, 7),
-  Planet(0.5, 400, PI*1.8f, 0.0003, 8),
-  Planet(0.18, 450, -PI/3, 0.0006, 9),
-  Planet(0.18, 472, PI/1.3f, 0.0007, 10),
+  Planet(0.05, 100, PI/2, 30, 3), 
+  Planet(0.1, 130, PI/6, 20, 4), 
+  Planet(0.2, 200, -PI, 10, 5),
+  Planet(0.18, 230, -PI/8, 8, 6),
+  Planet(0.7, 320, PI, 3, 7),
+  Planet(0.5, 400, PI*1.8f, 4, 8),
+  Planet(0.18, 450, -PI/3, 13, 9),
+  Planet(0.18, 472, PI/1.3f, 15, 10),
 };
 
+void calculate_delta_time(){
+  current_time = std::chrono::steady_clock::now(); 
+  delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - previous_time).count();
+  if (delta_time != 0) 
+    previous_time = current_time;
+}
+
 void RotatePlanets() {
+  calculate_delta_time();
+  if (delta_time == 0)
+    return;
+
   for (auto& planet: planets) {
-    planet.rotate_planet();
+    planet.rotate_planet(delta_time);
   }
   glutPostRedisplay();
 }
