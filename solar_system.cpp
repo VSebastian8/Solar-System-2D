@@ -34,7 +34,9 @@ glm::mat4 myMatrix, resizeMatrix;
 int codCol;
 //	Variabile pentru proiectia ortogonala;
 float xMin = -500, xMax = 500, yMin = -500, yMax = 500;
+float sunX = 0.0f, sunY = 0.0f;
 float PI = 3.141592;
+glm::mat4 sunPositionMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sunX, sunY, 1.0));
 
 struct Planet{
   float size, radius, angle, speed;
@@ -75,12 +77,12 @@ void CreateShaders(void) {
 void CreateVBO(void) {
   //  Coordonatele varfurilor;
   GLfloat Vertices[] = {
-      //	Cele 4 puncte din colturi;
+      // Cele 4 puncte din colturi;
       xMin, yMin, 0.0f, 1.0f, 
       xMax, yMin, 0.0f, 1.0f, 
       xMax, yMax, 0.0f, 1.0f,
       xMin, yMax, 0.0f, 1.0f,
-      //  Varfuri pentru axe;
+      // Varfuri pentru axe;
       xMin, 0.0f, 0.0f, 1.0f, 
       xMax, 0.0f, 0.0f, 1.0f, 
       0.0f, yMin, 0.0f, 1.0f,
@@ -158,8 +160,28 @@ void Initialize(void) {
  
 }
 
-void RotatePlanets(){
-  for(auto& planet: planets){
+void MoveSun(int key, int xx, int yy) {
+	switch (key) {		
+  	case GLUT_KEY_LEFT:
+      sunX -= 10;
+      break;
+    case GLUT_KEY_RIGHT:
+      sunX += 10;
+      break;
+    case GLUT_KEY_UP:
+      sunY += 10;
+      break;
+    case GLUT_KEY_DOWN:
+      sunY -= 10;
+      break;
+    default:
+      return;
+	}
+  sunPositionMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(sunX, sunY, 1.0));
+}
+
+void RotatePlanets() {
+  for (auto& planet: planets) {
     planet.rotate_planet();
   }
   glutPostRedisplay();
@@ -190,18 +212,19 @@ void RenderFunction(void) {
   glPolygonMode(GL_FRONT, GL_FILL);
   glPolygonMode(GL_BACK, GL_FILL);
 
-  // Desenarea Planetelor
   codCol = 2;
   glUniform1i(codColLocation, codCol);
 
-  myMatrix = resizeMatrix;
+  // Desenarea soarelui
+  myMatrix = resizeMatrix * sunPositionMatrix;
   glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-
   glDrawArrays(GL_POLYGON, 8, 8);
+
+  // Desenarea Planetelor
   for(auto& planet: planets){
     codCol = planet.color_code;
     glUniform1i(codColLocation, codCol);
-    myMatrix = resizeMatrix * planet.rotationTransform * planet.translateTransform * planet.scaleTransform;
+    myMatrix = resizeMatrix * sunPositionMatrix * planet.rotationTransform * planet.translateTransform * planet.scaleTransform;
     glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
     
     glDrawArrays(GL_POLYGON, 8, 8);
@@ -225,7 +248,8 @@ int main(int argc, char *argv[]) {
   glutDisplayFunc(RenderFunction);
   glutCloseFunc(Cleanup);
   glutIdleFunc(RotatePlanets);
-
+  glutSpecialFunc(MoveSun);
+  
   glutMainLoop();
 
   return 0;
