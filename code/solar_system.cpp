@@ -17,9 +17,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/transform.hpp"
-#include "includes/SOIL.h"	
-#include "shaders/loadShaders.h"
-#include "textures/loadTextures.h"
+#include "../includes/SOIL.h"	
+#include "../shaders/loadShaders.h"
+#include "../textures/loadTextures.h"
 
 #include <vector>
 #include <iostream>
@@ -36,7 +36,7 @@ GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId,
 
 void CreateShaders(void) {
   ProgramId =
-      LoadShaders("shaders/solar_system_shader.vert", "shaders/solar_system_shader.frag");
+      LoadShaders("../shaders/solar_system_shader.vert", "../shaders/solar_system_shader.frag");
   glUseProgram(ProgramId);
 }
 
@@ -148,8 +148,8 @@ void Initialize(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   CreateVBO();
   // Latimea si inaltimea imagine trebuie sa divida 100
-	LoadTexture("textures/sun.png", sun_texture);
-	LoadTexture("textures/jupiter.png", jupiter_texture);
+	LoadTexture("../textures/sun.png", sun_texture);
+	LoadTexture("../textures/jupiter.png", jupiter_texture);
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
