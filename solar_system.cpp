@@ -31,7 +31,8 @@
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
-  myMatrixLocation, matrRotlLocation, codColLocation, texture;
+  myMatrixLocation, matrRotlLocation, codColLocation, 
+  sun_texture, jupiter_texture;
 
 void CreateShaders(void) {
   ProgramId =
@@ -147,7 +148,8 @@ void Initialize(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   CreateVBO();
   // Latimea si inaltimea imagine trebuie sa divida 100
-	LoadTexture("textures/sun.png", texture);
+	LoadTexture("textures/sun.png", sun_texture);
+	LoadTexture("textures/jupiter.png", jupiter_texture);
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
@@ -166,7 +168,7 @@ void RenderFunction(void) {
   // drawAxes(codColLocation);
 
   glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, sun_texture);
 	//	Transmiterea variabilei uniforme pentru texturare spre shaderul de fragmente;
 	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
 
@@ -174,6 +176,9 @@ void RenderFunction(void) {
   drawSun(resizeMatrix, myMatrixLocation, codColLocation);
 
   // Desenarea Planetelor
+	glBindTexture(GL_TEXTURE_2D, jupiter_texture);
+	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
+
   drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation);
  
   //  Asigura rularea tuturor comenzilor OpenGL apelate anterior;

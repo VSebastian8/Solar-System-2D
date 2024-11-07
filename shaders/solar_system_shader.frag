@@ -33,7 +33,6 @@ void main(void)
 		out_Color = vec4 (1.0, 1.0, 1.0, 0.2);
 		break;
 	case 2: // Sun
-		//out_Color=vec4 (0.8, 0.8, 0.2, 1.0);
 		out_Color = texture(myTexture, tex_Coord);
 		break;
 	case 3: // Mercury
@@ -49,7 +48,7 @@ void main(void)
 		out_Color = vec4 (0.9, 0.1, 0.3, 1.0);
 		break;
 	case 7: // Jupiter
-		out_Color = vec4 (0.6, 0.4, 0.1, 1.0);
+		out_Color = texture(myTexture, tex_Coord);
 		break;
 	case 8: // Saturn
 		out_Color = vec4 (0.8, 0.7, 0.3, 1.0);
