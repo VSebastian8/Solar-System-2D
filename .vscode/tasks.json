@@ -12,6 +12,7 @@
                 "${workspaceFolder}/code/sun.cpp",
                 "${workspaceFolder}/code/planets.cpp",
                 "${workspaceFolder}/code/util.cpp",
+                "${workspaceFolder}/code/stars.cpp",
                 "${fileDirname}/${fileBasename}",
                 "${workspaceFolder}/includes/*.c",
                 "-o",

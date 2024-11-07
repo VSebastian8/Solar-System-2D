@@ -28,6 +28,7 @@
 #include "sun.h"
 #include "planets.h"
 #include "util.h"
+#include "stars.h"
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
@@ -43,6 +44,8 @@ void CreateShaders(void) {
 void CreateVBO(void) {
   //  Coordonatele varfurilor;
   GLfloat Vertices[] = {
+      // Punct in origine pentru stele
+       0.0f, 0.0f, 0.0f, 1.0f,
       // Cele 4 puncte din colturi;
       -1.0f, -1.0f, 0.0f, 1.0f, 
        1.0f, -1.0f, 0.0f, 1.0f, 
@@ -66,6 +69,8 @@ void CreateVBO(void) {
 
   //	Culori
   GLfloat Colors[] = {
+      // Stele
+      1.0f, 1.0f, 1.0f, 0.8f,
       // Culori Gradient
       0.0f, 0.0f, 0.1f, 1.0f,
       0.1f, 0.0f, 0.05f, 1.0f,
@@ -75,6 +80,8 @@ void CreateVBO(void) {
 
   // Coordonate textura
   GLfloat Textures[] = {
+      // Stele
+      0.5f,  0.5f,
       // Puncte din colturi
       0.0f,  0.0f,
       1.0f,  0.0f,
@@ -154,6 +161,8 @@ void Initialize(void) {
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
   myMatrixLocation = glGetUniformLocation(ProgramId, "myMatrix");
+
+  createStars(50);
 }
 
 //  Functia de desenarea a graficii pe ecran;
@@ -166,6 +175,8 @@ void RenderFunction(void) {
   drawBackground(myMatrixLocation, codColLocation);
   // Desenarea axelor;
   // drawAxes(codColLocation);
+  // Stele
+  drawStars(myMatrixLocation, codColLocation);
 
   glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, sun_texture);

@@ -30,7 +30,7 @@ void main(void)
 		out_Color = ex_Color;
 		break;
 	case 1: 
-		out_Color = vec4 (1.0, 1.0, 1.0, 0.2);
+		out_Color = vec4 (1.0, 1.0, 1.0, 0.8);
 		break;
 	case 2: // Sun
 		out_Color = texture(myTexture, tex_Coord);

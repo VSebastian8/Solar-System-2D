@@ -2,6 +2,12 @@
 
 OpenGL Project setup for VsCode on Linux
 
+### _Demo:_
+
+| ![Gif generated from demo.mp4](/demo.gif) |
+| :---------------------------------------: |
+|  _Final version of the 2D Solar System_   |
+
 ### _Used concepts:_
 
 - Transformation Matrix
@@ -15,4 +21,5 @@ OpenGL Project setup for VsCode on Linux
 - Mouse/Keyboard Interaction
   - [x] moving the sun
   - [x] zoom in/out
-  - [ ] adding stars
+- Random
+  - [x] stars in the background

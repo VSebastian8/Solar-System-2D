@@ -64,6 +64,6 @@ void drawPlanets(glm::mat4& resizeMatrix, glm::mat4& sunPositionMatrix, GLuint& 
         glm::mat4 myMatrix = resizeMatrix * sunPositionMatrix * planet.rotationTransform * planet.translateTransform * planet.scaleTransform;
         glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
         
-        glDrawArrays(GL_POLYGON, 8, 8);
+        glDrawArrays(GL_POLYGON, 9, 8);
   }
 }

@@ -14,7 +14,7 @@ void drawOptions(){
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
   glEnable(GL_POINT_SMOOTH);
-  glPointSize(15.0);
+  glPointSize(2.0);
   glLineWidth(2.0);
   glPolygonMode(GL_FRONT, GL_FILL);
   glPolygonMode(GL_BACK, GL_FILL);
@@ -24,13 +24,13 @@ void drawBackground(GLuint& myMatrixLocation, GLuint& codColLocation){
   int codCol = 0;
   glUniform1i(codColLocation, codCol);
   glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &identityMatrix[0][0]);
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+  glDrawArrays(GL_TRIANGLE_FAN, 1, 4);
 }
 
 void drawAxes(GLuint& codColLocation){
   int codCol = 1;
   glUniform1i(codColLocation, codCol);
-  glDrawArrays(GL_LINES, 4, 4);
+  glDrawArrays(GL_LINES, 5, 4);
 }
 
 void createWindow(){
