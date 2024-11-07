@@ -11,7 +11,7 @@ OpenGL Project setup for VsCode on Linux
 - Shaders
   - [x] applied transformations
   - [x] changed colors
-  - [ ] texture
+  - [x] texture
 - Mouse/Keyboard Interaction
   - [x] moving the sun
   - [x] zoom in/out

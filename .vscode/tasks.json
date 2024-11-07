@@ -8,17 +8,19 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${workspaceFolder}/shaders/*.cpp",
+                "${workspaceFolder}/textures/*.cpp",
                 "${workspaceFolder}/sun.cpp",
                 "${workspaceFolder}/planets.cpp",
                 "${workspaceFolder}/util.cpp",
                 "${fileDirname}/${fileBasename}",
-                "${workspaceFolder}/glad/*.c",
+                "${workspaceFolder}/includes/*.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lGL",
                 "-lglfw",
                 "-lGLEW",
-                "-lglut"
+                "-lglut",
+                "-lSOIL"
             ],
             "options": {
                 "cwd": "${fileDirname}"

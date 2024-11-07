@@ -17,7 +17,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/transform.hpp"
+#include "includes/SOIL.h"	
 #include "shaders/loadShaders.h"
+#include "textures/loadTextures.h"
 
 #include <vector>
 #include <iostream>
@@ -28,8 +30,8 @@
 #include "util.h"
 
 //  Identificatorii obiectelor de tip OpenGL;
-GLuint VaoId, VboId, ColorBufferId, ProgramId, myMatrixLocation,
-    matrRotlLocation, codColLocation;
+GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
+  myMatrixLocation, matrRotlLocation, codColLocation, texture;
 
 void CreateShaders(void) {
   ProgramId =
@@ -46,18 +48,18 @@ void CreateVBO(void) {
        1.0f,  1.0f, 0.0f, 1.0f,
       -1.0f,  1.0f, 0.0f, 1.0f,
       // Varfuri pentru axe;
-      -1.0f, 0.0f, 0.0f, 1.0f, 
-      1.0f, 0.0f, 0.0f, 1.0f, 
-      0.0f, -1.0f, 0.0f, 1.0f,
-      0.0f, 1.0f, 0.0f, 1.0f,
+      -1.0f,  0.0f, 0.0f, 1.0f, 
+       1.0f,  0.0f, 0.0f, 1.0f, 
+       0.0f, -1.0f, 0.0f, 1.0f,
+       0.0f,  1.0f, 0.0f, 1.0f,
       // Varfuri Octagon
-      50.0f, 0.0f, 0.0f, 1.0f,
-      35.0f, 35.0f, 0.0f, 1.0f,
-      0.0f, 50.0f, 0.0f, 1.0f,
-      -35.0f, 35.0f, 0.0f, 1.0f,
-      -50.0f, 0.0f, 0.0f, 1.0f,
-      -35.0f, -35.0f, 0.0f, 1.0f,
-      0.0f, -50.0f, 0.0f, 1.0f,
+      50.0f,   0.0f, 0.0f, 1.0f,
+      35.0f,  35.0f, 0.0f, 1.0f,
+       0.0f,  50.0f, 0.0f, 1.0f,
+     -35.0f,  35.0f, 0.0f, 1.0f,
+     -50.0f,   0.0f, 0.0f, 1.0f,
+     -35.0f, -35.0f, 0.0f, 1.0f,
+       0.0f, -50.0f, 0.0f, 1.0f,
       35.0f, -35.0f, 0.0f, 1.0f,
   };
 
@@ -68,6 +70,29 @@ void CreateVBO(void) {
       0.1f, 0.0f, 0.05f, 1.0f,
       0.0f, 0.0f, 0.1f, 1.0f,
       0.1f, 0.0f, 0.05f, 1.0f,
+  };
+
+  // Coordonate textura
+  GLfloat Textures[] = {
+      // Puncte din colturi
+      0.0f,  0.0f,
+      1.0f,  0.0f,
+      1.0f,  1.0f, 
+      0.0f,  1.0f,
+      // Axe
+      0.0f,  0.5f,
+      1.0f,  0.5f,
+      0.5f,  0.0f,
+      0.5f,  1.0f,
+      // Octagon
+      1.00f,  0.50f,
+      0.85f,  0.85f,
+      0.50f,  1.00f,
+      0.15f,  0.85f,
+      0.00f,  0.50f,
+      0.15f,  0.15f,
+      0.50f,  0.00f,
+      0.85f,  0.15f,
   };
 
   glGenVertexArrays(1, &VaoId);
@@ -85,6 +110,12 @@ void CreateVBO(void) {
   glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+  glGenBuffers(1, &TextureBufferId);
+  glBindBuffer(GL_ARRAY_BUFFER, TextureBufferId);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Textures), Textures, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 //  Elimina obiectele de tip shader dupa rulare;
@@ -92,11 +123,13 @@ void DestroyShaders(void) { glDeleteProgram(ProgramId); }
 
 //  Eliminarea obiectelor de tip VBO dupa rulare;
 void DestroyVBO(void) {
+	glDisableVertexAttribArray(2);
   glDisableVertexAttribArray(1);
   glDisableVertexAttribArray(0);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glDeleteBuffers(1, &ColorBufferId);
+  glDeleteBuffers(1, &TextureBufferId);
   glDeleteBuffers(1, &VboId);
 
   glBindVertexArray(0);
@@ -113,6 +146,8 @@ void Cleanup(void) {
 void Initialize(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   CreateVBO();
+  // Latimea si inaltimea imagine trebuie sa divida 100
+	LoadTexture("textures/sun.png", texture);
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
@@ -129,6 +164,11 @@ void RenderFunction(void) {
   drawBackground(myMatrixLocation, codColLocation);
   // Desenarea axelor;
   // drawAxes(codColLocation);
+
+  glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	//	Transmiterea variabilei uniforme pentru texturare spre shaderul de fragmente;
+	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
 
   // Desenarea soarelui
   drawSun(resizeMatrix, myMatrixLocation, codColLocation);

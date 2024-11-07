@@ -33,4 +33,5 @@ void drawSun(glm::mat4& resizeMatrix, GLuint& myMatrixLocation, GLuint& codColLo
     glm::mat4 myMatrix = resizeMatrix * sunPositionMatrix;
     glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
     glDrawArrays(GL_POLYGON, 8, 8);
+    // glDrawArrays(GL_POLYGON, 16, 4);
 }
