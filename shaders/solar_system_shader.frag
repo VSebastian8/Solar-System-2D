@@ -19,6 +19,7 @@ out vec4 out_Color;		//	Culoarea actualizata;
 
 //	Variabilele uniforme;
 uniform int codCol;
+uniform float starOpacity;
 uniform sampler2D myTexture;
 
 //	Actualizeaza culoarea in functie de codCol;
@@ -30,7 +31,7 @@ void main(void)
 		out_Color = ex_Color;
 		break;
 	case 1: 
-		out_Color = vec4 (1.0, 1.0, 1.0, 0.8);
+		out_Color = vec4 (1.0, 1.0, 1.0, starOpacity);
 		break;
 	case 2: // Sun
 		out_Color = texture(myTexture, tex_Coord);

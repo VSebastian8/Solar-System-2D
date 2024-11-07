@@ -4,11 +4,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <vector>
 #include <iostream> 
-#include <chrono>
 
 float PI = 3.141592;
-double delta_time, ms = 60000.0f;
-auto previous_time = std::chrono::steady_clock::now(), current_time = std::chrono::steady_clock::now();
 
 struct Planet{
   float size, radius, angle, speed;
@@ -22,7 +19,7 @@ struct Planet{
     rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
   }
   void rotate_planet(float dt){
-    angle += (PI * 2.0f * speed) * dt / ms;
+    angle += (PI * 2.0f * speed) * dt;
     if (angle > PI * 2)
       angle -= PI * 2;
     rotationTransform = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
@@ -40,22 +37,12 @@ std::vector<Planet> planets = {
   Planet(0.18, 472, PI/1.3f, 15, 10),
 };
 
-void calculate_delta_time(){
-  current_time = std::chrono::steady_clock::now(); 
-  delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - previous_time).count();
-  if (delta_time != 0) 
-    previous_time = current_time;
-}
 
-void RotatePlanets() {
-  calculate_delta_time();
-  if (delta_time == 0)
-    return;
 
+void RotatePlanets(double delta_time) {
   for (auto& planet: planets) {
     planet.rotate_planet(delta_time);
   }
-  glutPostRedisplay();
 }
 
 void drawPlanets(glm::mat4& resizeMatrix, glm::mat4& sunPositionMatrix, GLuint& myMatrixLocation, GLuint& codColLocation) {

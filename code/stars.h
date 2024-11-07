@@ -5,6 +5,7 @@
 #include "glm/glm.hpp"
 
 void createStars(int n);
-void drawStars(GLuint& myMatrixLocation, GLuint& codColLocation);
+void drawStars(GLuint& myMatrixLocation, GLuint& codColLocation, GLuint& starOpacLocation);
+void GlowStars();
 
 #endif

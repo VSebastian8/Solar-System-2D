@@ -10,6 +10,7 @@ void drawOptions();
 void drawBackground(GLuint& myMatrixLocation, GLuint& codColLocation);
 void drawAxes(GLuint& codColLocation);
 void createWindow();
+void UpdateScene();
 void Zoom(unsigned char key, int xx, int y);
 
 #endif

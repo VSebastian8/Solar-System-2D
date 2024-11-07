@@ -32,7 +32,7 @@
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
-  myMatrixLocation, matrRotlLocation, codColLocation, 
+  myMatrixLocation, matrRotlLocation, codColLocation, starOpacLocation, 
   sun_texture, jupiter_texture;
 
 void CreateShaders(void) {
@@ -92,7 +92,7 @@ void CreateVBO(void) {
       1.0f,  0.5f,
       0.5f,  0.0f,
       0.5f,  1.0f,
-      // Octagon
+      // Octogon
       1.00f,  0.50f,
       0.85f,  0.85f,
       0.50f,  1.00f,
@@ -160,6 +160,7 @@ void Initialize(void) {
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
+  starOpacLocation = glGetUniformLocation(ProgramId, "starOpacity");
   myMatrixLocation = glGetUniformLocation(ProgramId, "myMatrix");
 
   createStars(50);
@@ -176,7 +177,7 @@ void RenderFunction(void) {
   // Desenarea axelor;
   // drawAxes(codColLocation);
   // Stele
-  drawStars(myMatrixLocation, codColLocation);
+  drawStars(myMatrixLocation, codColLocation, starOpacLocation);
 
   glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, sun_texture);
@@ -208,7 +209,7 @@ int main(int argc, char *argv[]) {
 
   glutDisplayFunc(RenderFunction);
   glutCloseFunc(Cleanup);
-  glutIdleFunc(RotatePlanets);
+  glutIdleFunc(UpdateScene);
   glutKeyboardFunc(Zoom);
   glutSpecialFunc(MoveSun);
   
