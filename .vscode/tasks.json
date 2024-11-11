@@ -12,7 +12,7 @@
                 "${workspaceFolder}/code/*.cpp",
                 "${workspaceFolder}/includes/*.c",
                 "-o",
-                "${workspaceFolder}/solar_system",
+                "${workspaceFolder}/demo/solar_system",
                 "-lGL",
                 "-lglfw",
                 "-lGLEW",

@@ -25,4 +25,4 @@ A simple 2D space scene with a gradient background. There are randomly glowing s
 - Random
   - [x] stars in the background
 
-> This project setup for VsCode on Linux
+> This project is set up for VsCode on Linux
