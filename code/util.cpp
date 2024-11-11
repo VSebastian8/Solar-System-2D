@@ -5,13 +5,17 @@
 #include <chrono>
 #include "planets.h"
 #include "stars.h"
+#include "rocket.h"
+#include <iostream>
 
 //	Dimensiunile ferestrei de afisare;
 GLfloat winWidth = 1000, winHeight = 1000;
 //	Variabile pentru proiectia ortogonala;
 float xMin = -500, xMax = 500, yMin = -500, yMax = 500;
 // Coordonate ([xMin - xMax], [yMin - yMax]) -> ([-1.0, 1.0], [-1.0, 1.0])
-glm::mat4 resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax), identityMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 1.0));
+glm::mat4 resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax), 
+    originalZoomMatrix = glm::ortho(xMin, xMax, yMin, yMax), 
+    identityMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 1.0));
 // Variabile pentru calcularea timpului
 double delta_time, ms = 60000.0f;
 auto previous_time = std::chrono::steady_clock::now(), current_time = std::chrono::steady_clock::now();
@@ -42,7 +46,7 @@ void drawAxes(GLuint& codColLocation){
 
 void createWindow(){
   glutInitWindowSize(winWidth, winHeight);
-  glutInitWindowPosition(100, 100);
+  glutInitWindowPosition(700, 100);
   glutCreateWindow("Proiect 2D - Sistem Solar");
 }
 
@@ -60,6 +64,7 @@ void UpdateScene(){
 
   RotatePlanets(delta_time / ms);
   GlowStars();
+  MoveRocket(delta_time / ms);
 
   glutPostRedisplay();
 }
@@ -82,4 +87,8 @@ void Zoom(unsigned char key, int x, int y){
 	    	exit(0);
 	}
    resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax);
+}
+
+void MouseMove(int x, int y){
+  updateTarget(x, y, winWidth, winHeight);
 }

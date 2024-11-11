@@ -31,10 +31,10 @@ std::vector<Planet> planets = {
   Planet(0.1, 130, PI/6, 20, 4), 
   Planet(0.2, 200, -PI, 10, 5),
   Planet(0.18, 230, -PI/8, 8, 6),
-  Planet(0.7, 320, PI, 3, 7),
-  Planet(0.5, 400, PI*1.8f, 4, 8),
-  Planet(0.18, 450, -PI/3, 13, 9),
-  Planet(0.18, 472, PI/1.3f, 15, 10),
+  Planet(0.7, 320, PI, 3, 2),
+  Planet(0.5, 400, PI*1.8f, 4, 7),
+  Planet(0.18, 450, -PI/3, 13, 8),
+  Planet(0.18, 472, PI/1.3f, 15, 9),
 };
 
 

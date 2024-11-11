@@ -29,11 +29,12 @@
 #include "planets.h"
 #include "util.h"
 #include "stars.h"
+#include "rocket.h"
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
   myMatrixLocation, matrRotlLocation, codColLocation, starOpacLocation, 
-  sun_texture, jupiter_texture;
+  sun_texture, jupiter_texture, rocket_texture;
 
 void CreateShaders(void) {
   ProgramId =
@@ -65,6 +66,11 @@ void CreateVBO(void) {
      -35.0f, -35.0f, 0.0f, 1.0f,
        0.0f, -50.0f, 0.0f, 1.0f,
       35.0f, -35.0f, 0.0f, 1.0f,
+      // Racheta
+     -0.05f, -0.05f,  0.0f, 1.0f,
+      0.05f, -0.05f,  0.0f, 1.0f,
+      0.05f,  0.05f,  0.0f, 1.0f,
+     -0.05f,  0.05f,  0.0f, 1.0f,
   };
 
   //	Culori
@@ -101,6 +107,11 @@ void CreateVBO(void) {
       0.15f,  0.15f,
       0.50f,  0.00f,
       0.85f,  0.15f,
+      // Racheta
+      0.0f,  0.0f,
+      1.0f,  0.0f,
+      1.0f,  1.0f,
+      0.0f,  1.0f,
   };
 
   glGenVertexArrays(1, &VaoId);
@@ -157,6 +168,7 @@ void Initialize(void) {
   // Latimea si inaltimea imagine trebuie sa divida 100
 	LoadTexture("../textures/sun.png", sun_texture);
 	LoadTexture("../textures/jupiter.png", jupiter_texture);
+	LoadTexture("../textures/rocket.png", rocket_texture);
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
@@ -192,6 +204,12 @@ void RenderFunction(void) {
 	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
 
   drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation);
+
+  // Desenarea rachetei
+	glBindTexture(GL_TEXTURE_2D, rocket_texture);
+	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
+
+  drawRocket(myMatrixLocation, codColLocation);
  
   //  Asigura rularea tuturor comenzilor OpenGL apelate anterior;
   glFlush();
@@ -212,7 +230,8 @@ int main(int argc, char *argv[]) {
   glutIdleFunc(UpdateScene);
   glutKeyboardFunc(Zoom);
   glutSpecialFunc(MoveSun);
-  
+  glutPassiveMotionFunc(MouseMove);
+
   glutMainLoop();
 
   return 0;

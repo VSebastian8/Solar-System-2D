@@ -27,13 +27,13 @@ void main(void)
 {
   switch (codCol)
   {
-	case 0: 
+	case 0: // Background
 		out_Color = ex_Color;
 		break;
-	case 1: 
+	case 1: // Stars
 		out_Color = vec4 (1.0, 1.0, 1.0, starOpacity);
 		break;
-	case 2: // Sun
+	case 2: // Sun, Jupiter, Rocket
 		out_Color = texture(myTexture, tex_Coord);
 		break;
 	case 3: // Mercury
@@ -48,16 +48,13 @@ void main(void)
 	case 6: // Mars
 		out_Color = vec4 (0.9, 0.1, 0.3, 1.0);
 		break;
-	case 7: // Jupiter
-		out_Color = texture(myTexture, tex_Coord);
-		break;
-	case 8: // Saturn
+	case 7: // Saturn
 		out_Color = vec4 (0.8, 0.7, 0.3, 1.0);
 		break;
-	case 9: // Uranus
+	case 8: // Uranus
 		out_Color = vec4 (0.3, 0.6, 0.8, 1.0);
 		break;
-	case 10: // Neptune
+	case 9: // Neptune
 		out_Color = vec4 (0.5, 0.0, 1.0, 1.0);
 		break;
 	default:

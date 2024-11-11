@@ -52,7 +52,6 @@ void drawStars(GLuint& myMatrixLocation, GLuint& codColLocation, GLuint& starOpa
 }
 
 void GlowStars(){
-  std::cout << stars[0].opacity << "\n";
   for(auto& star: stars){
     if(star.current_glow >= star.glow_length * 2)
       star.current_glow = - star.glow_length * 2;
