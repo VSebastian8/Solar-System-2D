@@ -4,9 +4,9 @@ A simple 2D space scene with a gradient background. There are randomly glowing s
 
 ### _Demo:_
 
-| ![Gif generated from demo.mp4](/demo.gif) |
-| :---------------------------------------: |
-|  _Final version of the 2D Solar System_   |
+| ![Gif generated from demo.mp4](/demo/demo.gif) |
+| :--------------------------------------------: |
+|     _Final version of the 2D Solar System_     |
 
 ### _Used concepts:_
 
