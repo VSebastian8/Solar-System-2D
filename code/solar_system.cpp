@@ -33,8 +33,7 @@
 
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
-  myMatrixLocation, matrRotlLocation, codColLocation, starOpacLocation, 
-  sun_texture, jupiter_texture;
+  myMatrixLocation, matrRotlLocation, codColLocation, starOpacLocation;
 
 void CreateShaders(void) {
   ProgramId =
@@ -166,9 +165,18 @@ void Initialize(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   CreateVBO();
   // Latimea si inaltimea imagine trebuie sa divida 100
+  GLuint mercury_texture, venus_texture, earth_texture, mars_texture, jupiter_texture, saturn_texture, uranus_texture, neptune_texture;
 	LoadTexture("../textures/sun.png", sun_texture);
+	LoadTexture("../textures/mercury.png", mercury_texture);
+	LoadTexture("../textures/venus.png", venus_texture);
+	LoadTexture("../textures/earth.png", earth_texture);
+	LoadTexture("../textures/mars.png", mars_texture);
 	LoadTexture("../textures/jupiter.png", jupiter_texture);
-	LoadTexture("../textures/rocket.png", rocket_texture);
+	LoadTexture("../textures/saturn.png", saturn_texture);
+	LoadTexture("../textures/uranus.png", uranus_texture);
+	LoadTexture("../textures/neptune.png", neptune_texture);
+  LoadTexture("../textures/rocket.png", rocket_texture);
+  LoadPlanetTextures({mercury_texture, venus_texture, earth_texture, mars_texture, jupiter_texture, saturn_texture, uranus_texture, neptune_texture});
   CreateShaders();
 
   codColLocation = glGetUniformLocation(ProgramId, "codCol");
@@ -192,21 +200,14 @@ void RenderFunction(void) {
   drawStars(myMatrixLocation, codColLocation, starOpacLocation);
 
   glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, sun_texture);
-	//	Transmiterea variabilei uniforme pentru texturare spre shaderul de fragmente;
-	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
-
+	
   // Desenarea soarelui
-  drawSun(resizeMatrix, myMatrixLocation, codColLocation);
+  drawSun(resizeMatrix, myMatrixLocation, codColLocation, ProgramId);
 
   // Desenarea Planetelor
-	glBindTexture(GL_TEXTURE_2D, jupiter_texture);
-	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
-
-  drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation);
+  drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation, ProgramId);
 
   // Desenarea rachetei
-
   drawRocket(myMatrixLocation, codColLocation, ProgramId);
  
   //  Asigura rularea tuturor comenzilor OpenGL apelate anterior;

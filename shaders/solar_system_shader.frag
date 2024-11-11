@@ -33,31 +33,8 @@ void main(void)
 	case 1: // Stars
 		out_Color = vec4 (1.0, 1.0, 1.0, starOpacity);
 		break;
-	case 2: // Sun, Jupiter, Rocket
+	case 2: // Textures
 		out_Color = texture(myTexture, tex_Coord);
-		break;
-	case 3: // Mercury
-		out_Color = vec4 (0.9, 0.7, 0.2, 1.0);
-		break;
-	case 4: // Venus
-		out_Color = vec4 (0.4, 0.6, 0.4, 1.0);
-		break;
-	case 5: // Earth
-		out_Color = vec4 (0.2, 0.3, 0.8, 1.0);
-		break;
-	case 6: // Mars
-		out_Color = vec4 (0.9, 0.1, 0.3, 1.0);
-		break;
-	case 7: // Saturn
-		out_Color = vec4 (0.8, 0.7, 0.3, 1.0);
-		break;
-	case 8: // Uranus
-		out_Color = vec4 (0.3, 0.6, 0.8, 1.0);
-		break;
-	case 9: // Neptune
-		out_Color = vec4 (0.5, 0.0, 1.0, 1.0);
-		break;
-	default:
 		break;
   };
 }

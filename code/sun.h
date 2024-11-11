@@ -5,7 +5,8 @@
 #include "glm/glm.hpp"
 
 extern glm::mat4 sunPositionMatrix;
+extern GLuint sun_texture;
 void MoveSun(int key, int xx, int y);
-void drawSun(glm::mat4& resizeMatrix, GLuint& myMatrixLocation, GLuint& codColLocation);
+void drawSun(glm::mat4& resizeMatrix, GLuint& myMatrixLocation, GLuint& codColLocation, GLuint& ProgramId);
 
 #endif

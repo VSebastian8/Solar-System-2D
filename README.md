@@ -1,6 +1,6 @@
 # Solar-System-2D
 
-OpenGL Project setup for VsCode on Linux
+A simple 2D space scene with a gradient background. There are randomly glowing stars, textured planets that rotate around a moving sun and a rocket that follows the mouse.
 
 ### _Demo:_
 
@@ -17,10 +17,12 @@ OpenGL Project setup for VsCode on Linux
 - Shaders
   - [x] applied transformations
   - [x] changed colors
-  - [x] texture
+  - [x] applied texture
 - Mouse/Keyboard Interaction
   - [x] moving the sun
   - [x] zoom in/out
-  - [x] rocket follows mouse
+  - [x] rocket follows the mouse
 - Random
   - [x] stars in the background
+
+> This project setup for VsCode on Linux
