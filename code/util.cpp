@@ -20,7 +20,6 @@ glm::mat4 resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax),
 double delta_time, ms = 60000.0f;
 auto previous_time = std::chrono::steady_clock::now(), current_time = std::chrono::steady_clock::now();
 
-
 void drawOptions(){
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);

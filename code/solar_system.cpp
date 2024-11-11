@@ -34,7 +34,7 @@
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint VaoId, VboId, ColorBufferId, TextureBufferId, ProgramId, 
   myMatrixLocation, matrRotlLocation, codColLocation, starOpacLocation, 
-  sun_texture, jupiter_texture, rocket_texture;
+  sun_texture, jupiter_texture;
 
 void CreateShaders(void) {
   ProgramId =
@@ -206,10 +206,8 @@ void RenderFunction(void) {
   drawPlanets(resizeMatrix, sunPositionMatrix, myMatrixLocation, codColLocation);
 
   // Desenarea rachetei
-	glBindTexture(GL_TEXTURE_2D, rocket_texture);
-	glUniform1i(glGetUniformLocation(ProgramId, "myTexture"), 0);
 
-  drawRocket(myMatrixLocation, codColLocation);
+  drawRocket(myMatrixLocation, codColLocation, ProgramId);
  
   //  Asigura rularea tuturor comenzilor OpenGL apelate anterior;
   glFlush();

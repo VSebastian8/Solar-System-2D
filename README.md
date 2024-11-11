@@ -21,5 +21,6 @@ OpenGL Project setup for VsCode on Linux
 - Mouse/Keyboard Interaction
   - [x] moving the sun
   - [x] zoom in/out
+  - [x] rocket follows mouse
 - Random
   - [x] stars in the background
